@@ -20,7 +20,8 @@ public class ShanbayWordbookSpiderMain {
 		System.out.println("开始");
 		long start = System.currentTimeMillis();
 		try {
-			service.loadWordbookDataToFile();
+//			service.loadWordbookDataToFile();
+			service.loadWordbookDataToDB();
 		} finally {
 			logger.info("耗时：" + (System.currentTimeMillis() - start) + "ms.");
 			System.out.println("耗时：" + (System.currentTimeMillis() - start) + "ms.");

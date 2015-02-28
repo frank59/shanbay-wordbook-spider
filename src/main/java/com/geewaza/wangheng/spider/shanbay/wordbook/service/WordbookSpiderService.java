@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.geewaza.wangheng.spider.shanbay.wordbook.config.ConstantValues;
+import com.geewaza.wangheng.spider.shanbay.wordbook.dao.WordDao;
 import com.geewaza.wangheng.spider.shanbay.wordbook.model.Word;
 import com.geewaza.wangheng.spider.shanbay.wordbook.util.Request;
 
@@ -24,6 +25,7 @@ public class WordbookSpiderService {
 	private String outputFileName;
 	private String wordbookURL;
 	private String bookId;
+	private WordDao wordDao;
 	
 	public void setWordbookURL(String wordbookURL) {
 		this.wordbookURL = wordbookURL;
@@ -37,6 +39,32 @@ public class WordbookSpiderService {
 	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
+	public void setWordDao(WordDao wordDao) {
+		this.wordDao = wordDao;
+	}
+	
+	public void loadWordbookDataToDB() throws Exception {
+		logger.info("开始爬取单词信息： bookid=" + bookId);
+		String tableName = "t_wordbook_" + bookId;
+		
+		List<Word> result = new ArrayList<Word>();
+		List<String> wordListUrls = getWordlistUrls(this.wordbookURL.replaceAll("@BOOKID", bookId));
+		for (String wordListUrl : wordListUrls) {
+			List<Word> listWords = getListWord(wordListUrl);
+			if (listWords != null) {
+				result.addAll(listWords);
+			}
+		}
+		
+		wordDao.dropTable(tableName);
+		wordDao.createTable(tableName);
+		for (Word word : result) {
+			wordDao.insert(tableName, word);
+		}
+		
+		logger.info("爬取单词信息： bookid=" + bookId + "完成， tableName：" + tableName);
+	}
+	
 	
 	public void loadWordbookDataToFile() throws Exception {
 		logger.info("开始爬取单词信息： bookid=" + bookId);

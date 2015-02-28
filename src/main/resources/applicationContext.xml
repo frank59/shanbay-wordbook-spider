@@ -10,6 +10,17 @@
                      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
                      http://www.springframework.org/schema/tx
                      http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- datasource -->
+	<import resource="data-sources.xml"/>
+	
+	<!-- dao 的 父类 -->
+    <bean id="daoParent" abstract="true">
+    	<property name="dataSource">
+    		<ref bean="test"/>
+    	</property>
+    </bean>
+	<!-- dao -->
+	<bean id="wordDao" class="com.geewaza.wangheng.spider.shanbay.wordbook.dao.WordDao" parent="daoParent"/>
 	
 	<!-- service -->
 	<bean id="wordbookSpiderService" class="com.geewaza.wangheng.spider.shanbay.wordbook.service.WordbookSpiderService" scope="singleton">
@@ -17,5 +28,6 @@
 		<property name="outputFileName" value="word_@BOOKID.txt"/>
 		<property name="wordbookURL" value="http://www.shanbay.com/wordbook/@BOOKID/"/>
 		<property name="bookId" value="5440"/>
+		<property name="wordDao" ref="wordDao"/>
 	</bean>
 </beans>
