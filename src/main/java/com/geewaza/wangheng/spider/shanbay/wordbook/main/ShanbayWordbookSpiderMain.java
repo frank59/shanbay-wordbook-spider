@@ -1,5 +1,7 @@
 package com.geewaza.wangheng.spider.shanbay.wordbook.main;
 
+import java.net.URL;
+
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +12,11 @@ import com.geewaza.wangheng.spider.shanbay.wordbook.service.WordbookSpiderServic
 
 public class ShanbayWordbookSpiderMain {
 	
-	private static String log4j = "D:\\GitHub\\shanbay-wordbook-spider\\src\\main\\resources\\log4j.properties";
-	
 	public static void main(String[] args) throws Exception {
-		PropertyConfigurator.configure(log4j);
+		
+		URL url = ShanbayWordbookSpiderMain.class.getResource("/log4j.properties");
+		PropertyConfigurator.configure(url);
+		
 		Logger logger = LoggerFactory.getLogger(ShanbayWordbookSpiderMain.class);
 		ApplicationManager.initApplicationContext(new ClassPathXmlApplicationContext("applicationContext.xml"));
 		WordbookSpiderService service = ApplicationManager.getBean("wordbookSpiderService", WordbookSpiderService.class);
