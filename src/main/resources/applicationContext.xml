@@ -24,10 +24,10 @@
 	
 	<!-- service -->
 	<bean id="wordbookSpiderService" class="com.geewaza.wangheng.spider.shanbay.wordbook.service.WordbookSpiderService" scope="singleton">
+		<property name="bookId" value="1"/>
 		<property name="outputPath" value="D:/opt/logs/"/>
 		<property name="outputFileName" value="word_@BOOKID.txt"/>
 		<property name="wordbookURL" value="http://www.shanbay.com/wordbook/@BOOKID/"/>
-		<property name="bookId" value="5440"/>
 		<property name="wordDao" ref="wordDao"/>
 	</bean>
 </beans>
